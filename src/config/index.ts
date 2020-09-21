@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import { ConnectionOptions, ConnectionOptionsReader } from 'typeorm'
 
 const env = dotenv.config();
 if (env.error) {
@@ -24,4 +23,11 @@ export default {
     ],
     synchronize: true,
   },
+  email: {
+    service: process.env.EMAIL_SERVICE,
+    auth: {
+      user: process.env.EMAIL_AUTH_USER,
+      pass: process.env.EMAIL_AUTH_PASS
+    }
+  }
 };
