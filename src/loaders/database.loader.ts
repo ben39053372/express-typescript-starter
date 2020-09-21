@@ -6,7 +6,7 @@ export default async () => {
 
   useContainer(Container)
 
-  console.log(`Connect to postgres://${config.database.username}:${config.database.password}@${config.database.host}:${config.database.port}/${config.database.database}`)
+  console.log(`[TypeORM] Connect to postgres://${config.database.username}:${config.database.password}@${config.database.host}:${config.database.port}/${config.database.database}`)
   await createConnection({
     type: "postgres",
     url: `postgres://${config.database.username}:${config.database.password}@${config.database.host}:${config.database.port}/${config.database.database}`,
@@ -18,8 +18,12 @@ export default async () => {
     ],
     synchronize: true
   }).then(async connection => {
-    console.log('[TypeORM] Synchronize...')
-    await connection.synchronize();
-    console.log('[TypeORM] Synchronize finished!')
+
+    if (config.database.synchronize) {
+      console.log('[TypeORM] Synchronize...')
+      await connection.synchronize();
+      console.log('[TypeORM] Synchronize finished!')
+    }
+
   }).catch(error => console.log(error))
 }
