@@ -1,9 +1,9 @@
-import { Service } from 'typedi'
+import { Service, Inject } from 'typedi'
 import jwt from 'jsonwebtoken'
-import UserRepository from '../repository/user.repository'
-import config from '../config'
+import UserRepository from '../../repository/user.repository'
+import config from '../../config'
 import { InjectRepository } from 'typeorm-typedi-extensions'
-import { isPasswordCorrrect } from './password.service'
+import { isPasswordCorrrect } from '../password.service'
 
 const genToken = (payload: object | undefined): string => {
   return 'Bearer ' + jwt.sign({ ...payload }, <string>config.JWT_SECRET, {
@@ -15,8 +15,7 @@ const genToken = (payload: object | undefined): string => {
 export default class AuthService {
 
   constructor(
-    @InjectRepository()
-    private userRepository: UserRepository
+    @InjectRepository() private userRepository: UserRepository
   ) { }
 
   async login(loginName: string, saltedPassword: string) {
