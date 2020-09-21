@@ -1,8 +1,9 @@
+import "reflect-metadata"
+
 import express from 'express';
 import config from './config';
 import loader from './loaders';
 
-import "reflect-metadata"
 
 const setup = async () => {
   const app = express();
