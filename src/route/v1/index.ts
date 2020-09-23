@@ -11,5 +11,7 @@ api.use('/user', userRouter)
 
 api.use('/auth', authRouter)
 
+api.use((err, req, res, next) => next(err))
+
 export default api
 

@@ -3,29 +3,34 @@ import cors from "cors";
 import router from "../route";
 import morgan from "morgan";
 import helmet from "helmet";
-import { ICustomError } from "../interfaces/express";
+import { errors } from 'celebrate'
+import checkToken from '../middlewares/checkToken'
+import rateLimit from '../middlewares/rateLimiter'
+import UnAuthorizedError from '../middlewares/errorHandler/UnauthorizedError'
+import NotFoundError from '../middlewares/errorHandler/404NotFoundError'
+import ServerError from '../middlewares/errorHandler/serverError'
 
 export default async ({ app }: { app: express.Application }): Promise<void> => {
 
-  // for health check
-  app.get("/status", (req, res) => {
-    res.status(200).end();
-  });
-  app.head("/status", (req, res) => {
-    res.status(200).end();
-  });
-
-  app.use(morgan("dev"));
+  app.use(cors());
 
   app.enable("trust proxy");
 
-  app.disable("etag");
-
   app.disable("x-powered-by");
 
-  app.use(cors());
+  app.disable("etag");
 
   app.use(helmet());
+
+  // for health check
+  app.get("/status", (req, res) => res.status(200).end());
+  app.head("/status", (req, res) => res.status(200).end());
+
+  app.use(rateLimit)
+
+  app.use(checkToken)
+
+  app.use(morgan("dev"));
 
   app.use(express.json());
 
@@ -34,27 +39,15 @@ export default async ({ app }: { app: express.Application }): Promise<void> => {
   // route
   app.use("/api", router);
 
+  // error handler
+  app.use(UnAuthorizedError);
+
+  // valid error
+  app.use(errors())
+
   // handle 404 error
-  app.use(function (req, res) {
-    res.status(404).json({
-      error: "HTTP 404",
-      message: {
-        route: req.url,
-        detail: `This route not found`,
-      },
-    });
-  });
+  app.use(NotFoundError);
 
   // The end error handler
-  app.use(
-    (err: ICustomError, req: Request, res: Response, next: NextFunction) => {
-      res.status(err.status || 500);
-      res.json({
-        errors: {
-          message: err.message,
-        },
-      });
-      next(err);
-    }
-  );
+  app.use(ServerError);
 };
