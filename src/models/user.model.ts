@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
-import { IUser } from '../interfaces/user.t'
+import { Joi } from 'celebrate'
 
 @Entity()
 export default class User implements IUser {
@@ -24,3 +24,31 @@ export default class User implements IUser {
   })
   active!: boolean;
 }
+
+
+export interface IUserDTO {
+  username: string;
+  password: string;
+  email: string;
+}
+
+export interface IUser extends IUserDTO {
+  id: string;
+  active: boolean;
+}
+
+export interface IUserLogin {
+  loginName: string;
+  saltedPassword: string;
+}
+
+export const userDTOSchema = Joi.object({
+  username: Joi.string().max(255).trim(),
+  password: Joi.string().max(255).trim(),
+  email: Joi.string().email().trim()
+})
+
+export const userLoginSchema = Joi.object({
+  loginName: Joi.string().trim().required(),
+  saltedPassword: Joi.string().trim().required()
+})
