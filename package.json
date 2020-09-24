@@ -2,11 +2,12 @@
   "name": "express-typescript-starter",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
     "dev": "ts-node-dev --rs --cls src/app.ts",
     "lint": "eslint --fix ./src/**/*.ts --ext .ts",
-    "build": "tsc --project ./",
+    "build": "tsc -p .",
+    "start": "node dist/app.js",
     "pretty": "prettier --config .pretterrc './src/**/*.ts' --write",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
