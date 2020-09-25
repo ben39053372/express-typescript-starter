@@ -16,7 +16,8 @@ export default async () => {
     migrations: [
       __dirname + "/../migrations/*{.ts,.js}"
     ],
-    synchronize: true
+    synchronize: true,
+    logging: true
   }).then(async connection => {
 
     if (config.database.synchronize) {
