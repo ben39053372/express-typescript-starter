@@ -37,7 +37,6 @@ export default async ({
     console.log(`[Server] Loading Finish! `)
     console.log("<====================================>")
   } catch (err) {
-    throw err
+    console.log(err)
   }
-
 };

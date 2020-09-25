@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { IUser } from '../../interfaces/user.t';
+import { IUser } from '../../models/user.model';
 
 /**
 * return the hash password with salt

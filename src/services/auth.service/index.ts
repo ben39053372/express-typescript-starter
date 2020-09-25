@@ -47,10 +47,6 @@ export default class AuthService {
 
   }
 
-  loginWithEmail(email: string, saltedPassword: string) {
-
-  }
-
   logout(username: string) {
 
   }

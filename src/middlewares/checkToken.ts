@@ -2,14 +2,13 @@ import expressJWT from 'express-jwt'
 import config from '../config'
 
 const unlessRoute = [
-  '/api/*/auth/login',
-  { url: '/api/*/user', methods: ['GET'] }
+  { url: /\/api\/.*\/auth\/login/, methods: ['POST'] },
+  { url: /\/api\/.*\/user/, methods: ['POST'] }
 ]
 
 export default expressJWT({
   secret: config.JWT_SECRET as string,
   algorithms: ['HS256']
 }).unless({
-  path: unlessRoute,
-  method: 'OPTIONS'
+  path: unlessRoute
 })

@@ -1,26 +1,32 @@
 import { EntityRepository, Repository } from 'typeorm'
-import UserModel from '../models/user.model'
+import User from '../models/user.model'
 import { Service } from 'typedi'
-import { IUserInputDTO } from '../interfaces/user.t'
+import { IUserDTO } from '../models/user.model'
 
 @Service()
-@EntityRepository(UserModel)
-export default class UserRepository extends Repository<UserModel> {
+@EntityRepository(User)
+export default class UserRepository extends Repository<User> {
 
-  async findByUsername(username: string): Promise<UserModel> {
-    return await this.findOneOrFail({ username })
-  }
-
-  async checkEmailOrUsername(email: string, username: string): Promise<boolean> {
+  /**
+   * if user exist return true
+   * 
+   * else return false
+   * @param email 
+   * @param username 
+   */
+  async isUserExist(userDTO: IUserDTO): Promise<boolean> {
     return !! await this.findOne({
       where: [
-        { email },
-        { username }
+        { email: userDTO.email },
+        { username: userDTO.username }
       ]
     })
   }
 
-  async createUser(userDTO: IUserInputDTO) {
+  /**
+   * @param userDTO 
+   */
+  async insertUser(userDTO: IUserDTO) {
     let newUser = this.create()
     newUser.email = userDTO.email;
     newUser.username = userDTO.username;

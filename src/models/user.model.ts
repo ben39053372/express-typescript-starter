@@ -23,8 +23,17 @@ export default class User implements IUser {
     default: true
   })
   active!: boolean;
-}
 
+  get basicInfo() {
+    return {
+      id: this.id,
+      username: this.username,
+      email: this.email,
+      createDate: this.createDate,
+      active: this.active
+    }
+  }
+}
 
 export interface IUserDTO {
   username: string;
