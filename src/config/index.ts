@@ -18,6 +18,7 @@ export default {
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_DATABASE,
+    logging: process.env.NODE_ENV === 'production' ? false : true,
     entities: [
       __dirname + "/entity/*.ts"
     ],
@@ -29,5 +30,9 @@ export default {
       user: process.env.EMAIL_AUTH_USER,
       pass: process.env.EMAIL_AUTH_PASS
     }
+  },
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: Number(process.env.REDIS_PORT)
   }
 };
