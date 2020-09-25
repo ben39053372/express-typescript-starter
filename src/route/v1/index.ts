@@ -2,6 +2,7 @@ import { Router } from 'express'
 import rootRouter from './root'
 import userRouter from './user'
 import authRouter from './auth'
+import categoryRouter from './category'
 
 const api = Router()
 
@@ -11,7 +12,7 @@ api.use('/user', userRouter)
 
 api.use('/auth', authRouter)
 
-api.use((err, req, res, next) => next(err))
+api.use('/category', categoryRouter)
 
 export default api
 
